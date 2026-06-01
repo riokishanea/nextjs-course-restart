@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "next-themes";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = localFont({
   src: "./font/InterVF.ttf",
@@ -23,14 +28,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className={`${inter.className} ${spaceGrotesk.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang="en" className={cn("h-full", "antialiased", inter.className, spaceGrotesk.variable, "font-sans", geist.variable)} suppressHydrationWarning>
+      <body className="flex min-h-full flex-col">
+        <ThemeProvider attribute='class' defaultTheme="system" enableSystem disableTransitionOnChange>  
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
