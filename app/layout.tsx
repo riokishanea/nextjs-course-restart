@@ -5,6 +5,8 @@ import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -29,15 +31,18 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+  const session = await auth();
   return (
     <html lang="en" className={cn("h-full", "antialiased", inter.className, spaceGrotesk.variable, "font-sans", geist.variable)} suppressHydrationWarning>
+      <SessionProvider session={session}>
       <body className="flex min-h-full flex-col">
         <ThemeProvider attribute='class' defaultTheme="system" enableSystem disableTransitionOnChange>  
           {children}
         </ThemeProvider>
         <Toaster />
       </body>
+      </SessionProvider>
     </html>
   );
 };
