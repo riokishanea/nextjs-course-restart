@@ -26,7 +26,7 @@ const RightSideBar = () => {
       <div>
         <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
         <div className="mt-7 flex flex-col gap-7.5">
-          {hotQuestions.map(({ _id, title }, index) => (
+          {hotQuestions.map(({ _id, title }) => (
             <Link
               key={_id}
               href={ROUTES.QUESTION(String(_id))}
