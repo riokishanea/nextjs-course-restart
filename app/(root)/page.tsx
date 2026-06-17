@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
@@ -64,16 +63,16 @@ const questions = [
 ];  
 
 interface SearchParams {
-  searchParams: Promise<{ [key: string]: string}>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 const Home = async ({searchParams}: SearchParams) => {
+  const rawQuery = (await searchParams).query;
+  const query = (Array.isArray(rawQuery) ? rawQuery[0] : rawQuery) ?? "";
 
-  const { query = "" } = await searchParams
-
-  const filteredQuestions = questions.filter((question)=>{
-    question.title.toLowerCase().includes(query?.toLowerCase())
-  })
+  const filteredQuestions = questions.filter((question) =>
+    question.title.toLowerCase().includes(query.toLowerCase())
+  );
   
   return (
     <main>
