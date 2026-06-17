@@ -1,9 +1,80 @@
+import { auth } from "@/auth";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import Link from "next/link";
+const questions = [
+{
+  _id: "1",
+  title: "How to learn React?",
+  description: "I want to learn React, can anyone help me?",
+  tags: [
+    { _id: "1", name: "React" },
+    { _id: "2", name: "JavaScript" },
+  ],
+  author: { _id: "1", name: "John Doe" },
+  upvotes: 10,
+  answers: 5,
+  views: 100,
+  createdAt: new Date(),
+},
+{
+  _id: "2",
+  title: "How to learn JavaScript?",
+  description: "I want to learn JavaScript, can anyone help me?",
+  tags: [
+    { _id: "1", name: "React" },
+    { _id: "2", name: "JavaScript" },
+  ],
+  author: { _id: "1", name: "John Doe" },
+  upvotes: 10,
+  answers: 5,
+  views: 100,
+  createdAt: new Date(),
+},
+{
+  _id: "3",
+  title: "How to learn TypeScript?",
+  description: "I want to learn TypeScript, can anyone help me?",
+  tags: [
+    { _id: "1", name: "React" },
+    { _id: "2", name: "JavaScript" },
+    { _id: "3", name: "TypeScript" },
+  ],
+  author: { _id: "1", name: "John Doe" },
+  upvotes: 10,
+  answers: 5,
+  views: 100,
+  createdAt: new Date(),
+},
+{
+  _id: "4",
+  title: "How to learn Next.js?",
+  description: "I want to learn Next.js, can anyone help me?",
+  tags: [
+    { _id: "1", name: "TypeScript" },
+    { _id: "2", name: "Next.js" },
+  ],
+  author: { _id: "1", name: "John Doe" },
+  upvotes: 10,
+  answers: 5,
+  views: 100,
+  createdAt: new Date(),
+}
+];  
 
-const Home = async () => {
+interface SearchParams {
+  searchParams: Promise<{ [key: string]: string}>
+}
+
+const Home = async ({searchParams}: SearchParams) => {
+
+  const { query = "" } = await searchParams
+
+  const filteredQuestions = questions.filter((question)=>{
+    question.title.toLowerCase().includes(query?.toLowerCase())
+  })
+  
   return (
     <main>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -23,10 +94,9 @@ const Home = async () => {
 
       </section>
       <div className="mt-10 flex w-full flex-col gap-6">
-        <p>Question card 1</p>
-        <p>Question card 2</p>
-        <p>Question card 3</p>
-        <p>Question card 4</p>
+        {filteredQuestions.map((question)=>(
+          <h1 key={question._id}>{question.title}</h1>
+        ))}
       </div>
     </main>
   );

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Theme } from "./Theme";
 import MobileNavigation from "./MobileNav";
+import LocalSearch from "@/components/search/LocalSearch";
 
 const Navbar = () => {
   return (
