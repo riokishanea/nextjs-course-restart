@@ -1,80 +1,101 @@
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
+import QuestionCard from "@/components/search/QuestionCard";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import Link from "next/link";
 const questions = [
-{
-  _id: "1",
-  title: "How to learn React?",
-  description: "I want to learn React, can anyone help me?",
-  tags: [
-    { _id: "1", name: "React" },
-    { _id: "2", name: "JavaScript" },
-  ],
-  author: { _id: "1", name: "John Doe" },
-  upvotes: 10,
-  answers: 5,
-  views: 100,
-  createdAt: new Date(),
-},
-{
-  _id: "2",
-  title: "How to learn JavaScript?",
-  description: "I want to learn JavaScript, can anyone help me?",
-  tags: [
-    { _id: "1", name: "React" },
-    { _id: "2", name: "JavaScript" },
-  ],
-  author: { _id: "1", name: "John Doe" },
-  upvotes: 10,
-  answers: 5,
-  views: 100,
-  createdAt: new Date(),
-},
-{
-  _id: "3",
-  title: "How to learn TypeScript?",
-  description: "I want to learn TypeScript, can anyone help me?",
-  tags: [
-    { _id: "1", name: "React" },
-    { _id: "2", name: "JavaScript" },
-    { _id: "3", name: "TypeScript" },
-  ],
-  author: { _id: "1", name: "John Doe" },
-  upvotes: 10,
-  answers: 5,
-  views: 100,
-  createdAt: new Date(),
-},
-{
-  _id: "4",
-  title: "How to learn Next.js?",
-  description: "I want to learn Next.js, can anyone help me?",
-  tags: [
-    { _id: "1", name: "TypeScript" },
-    { _id: "2", name: "Next.js" },
-  ],
-  author: { _id: "1", name: "John Doe" },
-  upvotes: 10,
-  answers: 5,
-  views: 100,
-  createdAt: new Date(),
-}
-];  
+  {
+    _id: "1",
+    title: "How to learn React?",
+    description: "I want to learn React, can anyone help me?",
+    tags: [
+      { _id: "1", name: "React" },
+      { _id: "2", name: "JavaScript" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Doe",
+      avatar:
+        "https://static.vecteezy.com/system/resources/thumbnails/024/183/525/small/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg",
+    },
+    upvotes: 10,
+    answers: 5,
+    views: 100,
+    createdAt: new Date(),
+  },
+  {
+    _id: "2",
+    title: "How to learn JavaScript?",
+    description: "I want to learn JavaScript, can anyone help me?",
+    tags: [
+      { _id: "1", name: "React" },
+      { _id: "2", name: "JavaScript" },
+    ],
+    author: {
+      _id: "1",
+      name: "John MJ",
+      avatar:
+        "https://static.vecteezy.com/system/resources/thumbnails/024/183/525/small/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg",
+    },
+    upvotes: 10,
+    answers: 5,
+    views: 100,
+    createdAt: new Date(),
+  },
+  {
+    _id: "3",
+    title: "How to learn TypeScript?",
+    description: "I want to learn TypeScript, can anyone help me?",
+    tags: [
+      { _id: "1", name: "React" },
+      { _id: "2", name: "JavaScript" },
+      { _id: "3", name: "TypeScript" },
+    ],
+    author: {
+      _id: "1",
+      name: "Jane Doe",
+      avatar:
+        "https://static.vecteezy.com/system/resources/thumbnails/024/183/525/small/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg",
+    },
+    upvotes: 10,
+    answers: 5,
+    views: 100,
+    createdAt: new Date(),
+  },
+  {
+    _id: "4",
+    title: "How to learn Next.js?",
+    description: "I want to learn Next.js, can anyone help me?",
+    tags: [
+      { _id: "1", name: "TypeScript" },
+      { _id: "2", name: "Next.js" },
+    ],
+    author: {
+      _id: "1",
+      name: "Jacob Doe",
+      avatar:
+        "https://static.vecteezy.com/system/resources/thumbnails/024/183/525/small/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg",
+    },
+    upvotes: 10,
+    answers: 5,
+    views: 100,
+    createdAt: new Date(),
+  },
+];
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-const Home = async ({searchParams}: SearchParams) => {
+const Home = async ({ searchParams }: SearchParams) => {
   const rawQuery = (await searchParams).query;
   const query = (Array.isArray(rawQuery) ? rawQuery[0] : rawQuery) ?? "";
 
   const filteredQuestions = questions.filter((question) =>
     question.title.toLowerCase().includes(query.toLowerCase())
   );
-  
+
   return (
     <main>
       <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -84,19 +105,17 @@ const Home = async ({searchParams}: SearchParams) => {
         </Button>
       </section>
       <section className="mt-11">
-
-          <LocalSearch
-            route="/"
-            imgSrc="/icons/search.svg"
-            placeholder="Search..."
-            otherclasses="flex-1"
-          />
-
+        <LocalSearch
+          route="/"
+          imgSrc="/icons/search.svg"
+          placeholder="Search..."
+          otherclasses="flex-1"
+        />
       </section>
-      <HomeFilter/>
+      <HomeFilter />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {filteredQuestions.map((question)=>(
-          <h1 key={question._id}>{question.title}</h1>
+        {filteredQuestions.map((question) => (
+          <QuestionCard key={question._id} question={question} />
         ))}
       </div>
     </main>

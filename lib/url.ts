@@ -22,15 +22,21 @@ export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
   });
 };
 
-export const removeKeysFromQuery = ({ params, keysToRemove }: RemoveUrlQueryParams) => {
+export const removeKeysFromQuery = ({
+  params,
+  keysToRemove,
+}: RemoveUrlQueryParams) => {
   const queryString = qs.parse(params);
 
   keysToRemove.forEach((key) => {
     delete queryString[key];
   });
 
-  return qs.stringifyUrl({
-    url: window.location.pathname,
-    query: queryString,
-  }, { skipNull: true });
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: queryString,
+    },
+    { skipNull: true }
+  );
 };

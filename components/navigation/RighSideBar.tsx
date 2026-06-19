@@ -22,7 +22,7 @@ const popularTags = [
 
 const RightSideBar = () => {
   return (
-    <section className="background-light900_dark200 light-border shadow-light-300 sticky top-0 right-0 flex h-screen w-87.5 flex-col overflow-y-auto border p-6 pt-36 max-xl:hidden dark:shadow-none ">
+    <section className="background-light900_dark200 light-border shadow-light-300 sticky top-0 right-0 flex h-screen w-87.5 flex-col overflow-y-auto border p-6 pt-36 max-xl:hidden dark:shadow-none">
       <div>
         <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
         <div className="mt-7 flex flex-col gap-7.5">
@@ -33,7 +33,12 @@ const RightSideBar = () => {
               className="flex w-full items-start justify-between gap-7"
             >
               <p className="body-medium text-dark500_light700">{title}</p>
-              <Image src="/icons/chevron-right.svg" alt="chevron" height={20} width={20} />
+              <Image
+                src="/icons/chevron-right.svg"
+                alt="chevron"
+                height={20}
+                width={20}
+              />
             </Link>
           ))}
         </div>
@@ -43,7 +48,14 @@ const RightSideBar = () => {
         <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
         <div className="mt-7 flex flex-col gap-4">
           {popularTags.map(({ _id, name, question }) => (
-            <TagCard key={_id} _id={_id} name={name} question={question} showCount compact />
+            <TagCard
+              key={_id}
+              _id={_id}
+              name={name}
+              question={question}
+              showCount
+              compact
+            />
           ))}
         </div>
       </div>

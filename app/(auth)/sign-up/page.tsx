@@ -1,9 +1,8 @@
 "use client";
 
-import AuthForm from '@/components/form/AuthForm';
-import { SignUpSchema } from '@/lib/validation';
-import { z } from 'zod';
-
+import AuthForm from "@/components/form/AuthForm";
+import { SignUpSchema } from "@/lib/validation";
+import { z } from "zod";
 
 const defaultValues = {
   name: "",
@@ -15,7 +14,7 @@ const defaultValues = {
 const SignUp = () => {
   const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
     // TODO: Implement sign up logic (call API)
-    console.log('sign up', data);
+    console.log("sign up", data);
     return { success: true };
   };
 

@@ -1,7 +1,7 @@
 // /components/forms/AuthForm.tsx
 "use client";
 
-import {standardSchemaResolver} from "@hookform/resolvers/standard-schema";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import Link from "next/link";
 import {
   DefaultValues,
@@ -68,17 +68,21 @@ const AuthForm = <T extends FieldValues>({
                 required
                 type={field === "password" ? "password" : "text"}
                 {...form.register(fieldName)}
-                className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
+                className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus rounded-1.5 min-h-12 border"
               />
             </FieldContent>
-            <FieldError errors={fieldState?.error ? [{ message: fieldState.error.message }] : []} />
+            <FieldError
+              errors={
+                fieldState?.error ? [{ message: fieldState.error.message }] : []
+              }
+            />
           </Field>
         );
       })}
 
       <Button
         disabled={form.formState.isSubmitting}
-        className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter text-light-900!"
+        className="primary-gradient paragraph-medium rounded-2 font-inter text-light-900! min-h-12 w-full px-4 py-3"
       >
         {form.formState.isSubmitting
           ? buttonText === "Sign In"
