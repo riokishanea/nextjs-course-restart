@@ -7,7 +7,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
     <input
       type={type}
       data-slot="input"
-      className={cn(
+      className={cn(`px-2.5`,
         className
       )}
       {...props}
