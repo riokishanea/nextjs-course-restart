@@ -55,7 +55,13 @@ const LocalSearch = ({ route, imgSrc, placeholder, otherclasses }: Props) => {
       className={`background-light800_darkgradient flex min-h-14 grow items-center gap-5 rounded-[10px] px-4 ${otherclasses}`}
       onClick={() => inputRef.current?.focus()} // Auto-Focus
     >
-      <Image src={imgSrc} height={24} width={24} alt="Search" className="cursor-pointer"/>
+      <Image
+        src={imgSrc}
+        height={24}
+        width={24}
+        alt="Search"
+        className="cursor-pointer"
+      />
 
       <Input
         ref={inputRef}
