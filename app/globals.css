@@ -335,7 +335,7 @@
 }
 
 @utility no-focus {
-  @apply focus-visible:ring-0! focus-visible:ring-transparent! focus-visible:ring-offset-0!;
+   @apply outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0;
 }
 
 @utility markdown {
