@@ -7,8 +7,17 @@ import { Button } from "../ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { AskQuestionSchema } from "@/lib/validation";
+import { useRef } from "react";
+import { MDXEditorMethods } from "@mdxeditor/editor";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import('@/components/Editor'), {
+  ssr: false
+})
 
 const QuestionForm = () => {
+  const editorRef = useRef<MDXEditorMethods>(null)
+
   const form = useForm({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
@@ -58,7 +67,7 @@ const QuestionForm = () => {
       <Controller
         control={form.control}
         name="content"
-        render={({ fieldState }) => (
+        render={({ fieldState ,field}) => (
           <Field className="flex w-full flex-col">
             <FieldLabel className="paragraph-semibold text-dark400_light800">
               Detailed explanation of your problem{" "}
@@ -66,7 +75,7 @@ const QuestionForm = () => {
             </FieldLabel>
 
             {/* Replace with your editor component */}
-            <div>Editor</div>
+            <Editor value={field.value} fieldChange={field.onChange} editorRef={editorRef} />
 
             <FieldDescription className="body-regular text-light-500 mt-2.5">
               Introduce the problem and expand on what you've put in the title.
