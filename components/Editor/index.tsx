@@ -30,7 +30,6 @@ import {
   linkDialogPlugin,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
-import "./dark-editor.css";
 import { basicDark } from "cm6-theme-basic-dark";
 import { useTheme } from "next-themes";
 
@@ -49,7 +48,7 @@ const Editor = ({ value, fieldChange, editorRef, ...props }: Props) => {
       key={resolvedTheme}
       markdown={value}
       ref={editorRef}
-      className="background-light800_dark200 light-border-2 markdown-editor dark-editor rounded-2 w-full border"
+      className="background-light800_dark200 light-border-2 markdown-editor rounded-2 w-full border"
       onChange={fieldChange}
       plugins={[
         headingsPlugin(),

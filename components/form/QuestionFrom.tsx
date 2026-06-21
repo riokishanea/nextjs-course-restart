@@ -47,7 +47,7 @@ const QuestionForm = () => {
             </FieldLabel>
 
             <Input
-              className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus rounded-1.5 min-h-14 border"
+              className="paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 no-focus rounded-1.5 min-h-14 border"
               {...field}
             />
 
@@ -100,7 +100,7 @@ const QuestionForm = () => {
 
             <div className="flex flex-col">
               <Input
-                className="rounded-1.5 paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
+                className="rounded-1.5 paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
                 placeholder="Add tags..."
                 value=""
                 onChange={() => {}}
