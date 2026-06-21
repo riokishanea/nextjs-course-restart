@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { AskQuestionSchema } from "@/lib/validation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import dynamic from "next/dynamic";
 import { z } from "zod";
@@ -31,6 +31,8 @@ const QuestionForm = () => {
     },
   });
 
+  const [tagInput, setTagInput] = useState("");
+
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     field: { value: string[] }
@@ -44,7 +46,7 @@ const QuestionForm = () => {
           shouldValidate: true,
           shouldDirty: true,
         });
-        e.currentTarget.value = "";
+        setTagInput("");
         form.clearErrors("tags");
       } else if (tagInput.length > 15) {
         form.setError("tags", {
@@ -58,18 +60,25 @@ const QuestionForm = () => {
         });
       }
     }
+    if (form.getValues("tags").length >= 3) {
+      form.setError("tags", {
+        type: "manual",
+        message: "You can add a maximum of 3 tags",
+      });
+    }
   };
 
-  const handleTagRemove = (tag: string, field: { value: string[] }) => {
-    const newTag = field.value.filter((t) => t !== tag);
+  const handleTagRemove = (tag: string) => {
+    const currentTag = form.getValues("tags");
+    const newTag = currentTag.filter((t) => t !== tag);
 
-    form.setValue("tags", newTag);
-    
-    if(newTag.length === 0){
-      form.setError('tags', {
+    form.setValue("tags", newTag, { shouldValidate: true, shouldDirty: true });
+
+    if (newTag.length === 0) {
+      form.setError("tags", {
         type: "manual",
-        message: "Tags are required"
-      })
+        message: "Tags are required",
+      });
     }
   };
 
@@ -152,8 +161,9 @@ const QuestionForm = () => {
               <Input
                 className="rounded-1.5 paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
                 placeholder="Add tags..."
+                value={tagInput}
                 onKeyDown={(e) => handleInputKeyDown(e, field)}
-                onChange={() => {}}
+                onChange={(e) => setTagInput(e.target.value)}
               />
               {/* Tags list goes here */}
               {field.value.length > 0 && (
@@ -166,7 +176,7 @@ const QuestionForm = () => {
                       compact
                       remove
                       isButton
-                      handleRemove={() => handleTagRemove(tag, field)}
+                      handleRemove={() => handleTagRemove(tag)}
                     />
                   ))}
                 </div>
