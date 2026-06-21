@@ -10,15 +10,19 @@ import { AskQuestionSchema } from "@/lib/validation";
 import { useRef } from "react";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import dynamic from "next/dynamic";
+import { z } from "zod";
+import TagCard from "../cards/TagCard";
 
-const Editor = dynamic(() => import('@/components/Editor'), {
-  ssr: false
-})
+type QuestionFormValues = z.infer<typeof AskQuestionSchema>;
+
+const Editor = dynamic(() => import("@/components/Editor"), {
+  ssr: false,
+});
 
 const QuestionForm = () => {
-  const editorRef = useRef<MDXEditorMethods>(null)
+  const editorRef = useRef<MDXEditorMethods>(null);
 
-  const form = useForm({
+  const form = useForm<QuestionFormValues>({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
       title: "",
@@ -27,7 +31,49 @@ const QuestionForm = () => {
     },
   });
 
-  const handleCreateQuestion = (data: any) => {
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: { value: string[] }
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const tagInput = e.currentTarget.value.trim().toLowerCase();
+
+      if (tagInput && tagInput.length < 15 && !field.value.includes(tagInput)) {
+        form.setValue("tags", [...field.value, tagInput], {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+        e.currentTarget.value = "";
+        form.clearErrors("tags");
+      } else if (tagInput.length > 15) {
+        form.setError("tags", {
+          type: "manual",
+          message: "Tag should be less than 15",
+        });
+      } else if (field.value.includes(tagInput)) {
+        form.setError("tags", {
+          type: "manual",
+          message: "Tag already exists",
+        });
+      }
+    }
+  };
+
+  const handleTagRemove = (tag: string, field: { value: string[] }) => {
+    const newTag = field.value.filter((t) => t !== tag);
+
+    form.setValue("tags", newTag);
+    
+    if(newTag.length === 0){
+      form.setError('tags', {
+        type: "manual",
+        message: "Tags are required"
+      })
+    }
+  };
+
+  const handleCreateQuestion = (data: QuestionFormValues) => {
     console.log(data);
   };
 
@@ -67,7 +113,7 @@ const QuestionForm = () => {
       <Controller
         control={form.control}
         name="content"
-        render={({ fieldState ,field}) => (
+        render={({ fieldState, field }) => (
           <Field className="flex w-full flex-col">
             <FieldLabel className="paragraph-semibold text-dark400_light800">
               Detailed explanation of your problem{" "}
@@ -75,7 +121,11 @@ const QuestionForm = () => {
             </FieldLabel>
 
             {/* Replace with your editor component */}
-            <Editor value={field.value} fieldChange={field.onChange} editorRef={editorRef} />
+            <Editor
+              value={field.value}
+              fieldChange={field.onChange}
+              editorRef={editorRef}
+            />
 
             <FieldDescription className="body-regular text-light-500 mt-2.5">
               Introduce the problem and expand on what you've put in the title.
@@ -102,11 +152,25 @@ const QuestionForm = () => {
               <Input
                 className="rounded-1.5 paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 no-focus min-h-14 border"
                 placeholder="Add tags..."
-                value=""
+                onKeyDown={(e) => handleInputKeyDown(e, field)}
                 onChange={() => {}}
               />
               {/* Tags list goes here */}
-              Tags
+              {field.value.length > 0 && (
+                <div className="flex-start mt-2 flex-wrap gap-2.5">
+                  {field.value.map((tag: string) => (
+                    <TagCard
+                      key={tag}
+                      _id={tag}
+                      name={tag}
+                      compact
+                      remove
+                      isButton
+                      handleRemove={() => handleTagRemove(tag, field)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             <FieldDescription className="body-regular text-light-500 mt-2.5">
@@ -126,7 +190,7 @@ const QuestionForm = () => {
           type="submit"
           className="primary-gradient text-light-900 min-h-11.5 px-4 py-3"
         >
-          Ask A Question
+          Submit Question
         </Button>
       </div>
     </form>
