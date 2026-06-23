@@ -1,6 +1,4 @@
-import { error } from "console";
 import mongoose, { Mongoose } from "mongoose";
-import { cache } from "react";
 
 const MONGODB_URI = process.env.MONGODBURI as string;
 
