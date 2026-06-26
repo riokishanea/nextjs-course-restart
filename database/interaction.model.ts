@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IInteraction {
   user: Types.ObjectId;
@@ -7,11 +7,13 @@ export interface IInteraction {
   actionType: "question" | "answer";
 }
 
+export interface IInteractionDoc extends IInteraction, Document{}
+
 const InteractionSchema = new Schema<IInteraction>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    action: { type: String, required: true }, // can be "upvote", "downvote", "collect(save)", "uncollect(unsave), "question", "answer"
-    actionId: { type: Schema.Types.ObjectId, required: true }, // can be questionId or answerId or userId
+    action: { type: String, required: true }, // can be "upvote", "downvote", "ask-question", "view"
+    actionId: { type: Schema.Types.ObjectId, required: true }, // can be "questionId", "answerId"
     actionType: { type: String, enum: ["question", "answer"], required: true },
   },
   { timestamps: true }
