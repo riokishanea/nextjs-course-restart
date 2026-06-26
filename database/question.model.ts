@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { Document, model, models, Schema, Types } from "mongoose";
 
 export interface IQuestion {
     title: string;
@@ -11,11 +11,13 @@ export interface IQuestion {
     answers: number;
 }
 
+export interface IQuestionDoc extends IQuestion, Document{}
+
 const QuestionScheme = new Schema<IQuestion>({
     title: {type: String, required: true},
     content: {type: String, required: true}, 
-    tags: [{type: Schema.Types.ObjectId, ref: "Tags"}],
-    author: {type: Schema.Types.ObjectId, ref: "User"},
+    tags: [{type: Schema.Types.ObjectId, ref: "Tags", required: true}],
+    author: {type: Schema.Types.ObjectId, ref: "User", required: true},
     views: {type: Number, default: 0},
     upvotes: {type: Number, default: 0}, 
     downvotes: {type: Number, default: 0},
